@@ -47,7 +47,7 @@ app.use(morgan('combined'));
 if(env === 'development')
     mongoose.connect('mongodb://127.0.0.1/multivision');
 else
-    mongoose.connect('mongodb://root:BPw01pnyISFE@localhost/DATABASE');//configuration for "AWS with Bitnami Mean Stack"
+    mongoose.connect('mongodb://antony:multivision_passwd@localhost/multivision');//configuration for "AWS with Bitnami Mean Stack"
 
 
 //===== MongoDB Run
