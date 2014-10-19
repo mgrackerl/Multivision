@@ -15,6 +15,8 @@ var mongoose = require('mongoose');
 //is process.env.NODE_ENV value is not set then set Default value (which is "development")
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+console.log("env : "+env);
+
 var app = express();
 
 //Helper function to configure Stylus middleware
@@ -42,7 +44,12 @@ app.use(morgan('combined'));
 
 
 //MongoDB configuration. multivision will be a database name (creates if not exists)
-mongoose.connect('mongodb://127.0.0.1/multivision');
+if(env === 'development')
+    mongoose.connect('mongodb://127.0.0.1/multivision');
+else
+    mongoose.connect('mongodb://root:BPw01pnyISFE@localhost/DATABASE');//configuration for "AWS with Bitnami Mean Stack"
+
+
 //===== MongoDB Run
 var db = mongoose.connection;
 //listen event - Error
@@ -73,7 +80,10 @@ app.get('*', function(req, res){
 });
 
 //Run the server
+
 var port = 80;
+if(env === 'development')
+    var port = 8000;
 
 app.listen(port);
 console.log("Listening on port "+port+" ...");
