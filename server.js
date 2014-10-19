@@ -60,7 +60,7 @@ db.once('open', function callback(){
 });
 
 var messageSchema = mongoose.Schema({message: String});
-var messageModel = mongoose.model('Message', messageSchema);
+var messageModel = mongoose.model('message', messageSchema);
 var mongoMessage;
 messageModel.findOne().exec(function(err, messageDoc){
     mongoMessage = messageDoc.message;
