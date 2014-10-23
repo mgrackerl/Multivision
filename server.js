@@ -65,6 +65,7 @@ var mongoMessage;
 messageModel.findOne().exec(function(err, messageDoc){
     //mongoMessage = messageDoc.message;
     mongoMessage = messageDoc;
+    console.log('Multivision DB findOne returned:' +mongoMessage);
 });
 
 
