@@ -44,10 +44,14 @@ app.use(morgan('combined'));
 
 
 //MongoDB configuration. multivision will be a database name (creates if not exists)
-if(env === 'development')
+if(env === 'development') {
     mongoose.connect('mongodb://127.0.0.1/multivision');
-else
+    console.log('Multivision DB connect to - mongodb://127.0.0.1/multivision.')
+}
+else {
     mongoose.connect('mongodb://antony:multivision_passwd@localhost/multivision');//configuration for "AWS with Bitnami Mean Stack"
+    console.log('Multivision DB connect to - mongodb://antony:multivision_passwd@localhost/multivision.')
+}
 
 
 //===== MongoDB Run
