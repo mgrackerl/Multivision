@@ -63,15 +63,15 @@ db.once('open', function callback(){
     console.log('Multivision DB opened.')
 });
 
+/*
 var messageSchema = mongoose.Schema({message: String});
 var messageModel = mongoose.model('message', messageSchema);
 var mongoMessage;
 messageModel.findOne().exec(function(err, messageDoc){
-    //mongoMessage = messageDoc.message;
-    mongoMessage = messageDoc;
+    mongoMessage = messageDoc.message;
     console.log('Multivision DB findOne returned:' +mongoMessage);
 });
-
+*/
 
 //===== Express Run
 //for partial views
@@ -80,9 +80,7 @@ app.get('/partials/:partialPath', function(req, res){
 });
 //set default route. Because SPA we need only one route.
 app.get('*', function(req, res){
-    res.render('index', {
-        mongoMessage: mongoMessage
-    });//take from view engine folder.
+    res.render('index');//take from view engine folder.
 });
 
 //Run the server
