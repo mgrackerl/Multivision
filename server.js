@@ -76,8 +76,8 @@ messageModel.findOne().exec(function(err, messageDoc){
 //===== Express Run
 //for partial views
 app.get('/partials/*', function(req, res){
-    console.log("--- req.params : "+req.params);
-    res.render('partials/' + req.params);
+    console.log("--- req.params : "+req.params[0]);
+    res.render('partials/' + req.params[0]);
 });
 //set default route. Because SPA we need only one route.
 app.get('*', function(req, res){
