@@ -1,9 +1,13 @@
 /**
  * Created by A on 10/26/2014.
  */
+
 var passport= require('passport');
 
 module.exports = function(app){
+
+    console.log("routes.js exported");
+
     //===== Express Run
     //for partial views
     app.get('/partials/*', function(req, res){
@@ -11,8 +15,10 @@ module.exports = function(app){
         res.render('../../public/app/' + req.params[0]);
     });
 
+    /*
     //login
     app.get('/login', function(req, res, next){
+        console.log("/login : "+req);
         var auth = passport.authenticate('local', function(err, user)
         {
             if(err) return next(err);
@@ -27,9 +33,11 @@ module.exports = function(app){
 
         auth(req, res, next);
     });
+*/
 
     //set default route. Because SPA we need only one route.
     app.get('*', function(req, res){
+        console.log("/* : "+req);
         res.render('index');//take from view engine folder.
     });
 

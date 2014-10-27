@@ -28,8 +28,10 @@ require('./server/config/express')(app, config);
 
 require('./server/config/mongooseConfig')(config);
 
-var User = mongoose.model('Model');
-passport.use(new LocalStrategy(
+var User = mongoose.model('User');
+
+/*
+passport.use(new localStrategy(
     function(username, password, done){
         User.findOne({userName: username}).exec(function(err, user){
             if(user)
@@ -56,7 +58,7 @@ passport.deserializeUser(function(id, done){
         }
     })
 });
-
+*/
 require('./server/config/routes')(app);
 
 
@@ -64,7 +66,6 @@ require('./server/config/routes')(app);
 
 app.listen(config.port);
 console.log("Listening on port "+config.port+" ...");
-
 
 
 //We can install nodemon. The Nodemon - helps to auto apply change not restarting the node server.

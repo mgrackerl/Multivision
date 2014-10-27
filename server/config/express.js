@@ -9,6 +9,8 @@ var stylus = require('stylus');
 //Logger
 var morgan = require('morgan');
 
+var session = require('express-session')
+
 var cookieParser = require('cookie-parser')
 var passport = require('passport')
 
@@ -28,7 +30,24 @@ module.exports = function(app, config) {
         src: config.rootPath + "/public",
         compile: Compile
     }));
-    app.use(express.session({secret:'multi vision unicorns'}));
+
+    app.set('trust proxy', 1) // trust first proxy
+
+/*
+    app.use(session({
+        secret: 'multi vision unicorns',
+        cookie: { secure: true }
+    }))
+*/
+    app.use(session({
+        genid: function(req) {
+            return genuuid(); // use UUIDs for session IDs
+        },
+        secret: 'multi vision unicorns'
+    }))
+
+
+
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -38,6 +57,7 @@ module.exports = function(app, config) {
     //Turn on express logging. DUPRICATED: Use morgan
     //app.use(express.logger("dev"));
     app.use(morgan('combined'));
+
     //Turn on express body parser. This will used for some middlewares. DUPRICATED: need 'body-parser'
     //app.use(express.bodyParser());
 }
