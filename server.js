@@ -5,12 +5,13 @@
 
 //Bring express
 var express = require('express');
-//Use "Stylus" for css
-var stylus = require('stylus');
-//Logger
-var morgan = require('morgan');
-//MongoDB
+//Passport for Authentication
+var passport = require('passport');
+//Passport-Local for Authentication
+var localStrategy = require('passport-local').Strategy;
+//Bring express
 var mongoose = require('mongoose');
+
 
 //is process.env.NODE_ENV value is not set then set Default value (which is "development")
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
@@ -19,79 +20,50 @@ console.log("env : "+env);
 
 var app = express();
 
-//Helper function to configure Stylus middleware
-function Compile(str, path){
-    return stylus(str).set('filename', path);
+var config = require('./server/config/config')[env];
 
-}
+console.log('config: %j',config);
 
-//===== Configurations
-//set view engine
-app.set('views', __dirname + "/server/views");
-app.set('view engine', 'jade');
-//Stylus for express
-app.use(stylus.middleware({
-    src: __dirname + "/public",
-    compile: Compile
-}));
-//sets directory for any public request. For example if request is "localhost/favicon.ico" then express will search favicon.ico inside "__dirname+public" folder
-app.use(express.static(__dirname + "/public"));
-//Turn on express logging. DUPRICATED: Use morgan
-//app.use(express.logger("dev"));
-app.use(morgan('combined'));
-//Turn on express body parser. This will used for some middlewares. DUPRICATED: need 'body-parser'
-//app.use(express.bodyParser());
+require('./server/config/express')(app, config);
 
+require('./server/config/mongooseConfig')(config);
 
-//MongoDB configuration. multivision will be a database name (creates if not exists)
-if(env === 'development') {
-    mongoose.connect('mongodb://127.0.0.1/multivision');
-    console.log('Multivision DB connect to - mongodb://127.0.0.1/multivision.')
-}
-else {
-    mongoose.connect('mongodb://antony:multivision_passwd@localhost/multivision');//configuration for "AWS with Bitnami Mean Stack"
-    console.log('Multivision DB connect to - mongodb://antony:multivision_passwd@localhost/multivision.')
-}
+var User = mongoose.model('Model');
+passport.use(new LocalStrategy(
+    function(username, password, done){
+        User.findOne({userName: username}).exec(function(err, user){
+            if(user)
+                return done(null, user);
+            else
+                return done(null, false);
+        });
+    }
+))
 
-
-//===== MongoDB Run
-var db = mongoose.connection;
-//listen event - Error
-db.on('error', console.error.bind(console, 'MongoDB connection error ...'));
-//listen event once - Open connection
-db.once('open', function callback(){
-    console.log('Multivision DB opened.')
+passport.serializeUser(function(user, done){
+  if(user){
+      done(null, user._id);
+  }
 });
 
-/*
-var messageSchema = mongoose.Schema({message: String});
-var messageModel = mongoose.model('message', messageSchema);
-var mongoMessage;
-messageModel.findOne().exec(function(err, messageDoc){
-    mongoMessage = messageDoc.message;
-    console.log('Multivision DB findOne returned:' +mongoMessage);
+passport.deserializeUser(function(id, done){
+    User.findOne({_id:id}).exec(function(err, user){
+        if(user){
+            return done(null, user);
+        }
+        else{
+            return done(null, false);
+        }
+    })
 });
-*/
 
-//===== Express Run
-//for partial views
-app.get('/partials/*', function(req, res){
-    console.log("--- req.params : "+req.params[0]);
-    res.render('partials/' + req.params[0]);
-});
-//set default route. Because SPA we need only one route.
-app.get('*', function(req, res){
-    res.render('index');//take from view engine folder.
-});
+require('./server/config/routes')(app);
+
 
 //Run the server
 
-var port = 80;
-if(env === 'development')
-    var port = 8000;
-
-app.listen(port);
-console.log("Listening on port "+port+" ...");
+app.listen(config.port);
+console.log("Listening on port "+config.port+" ...");
 
 
 
