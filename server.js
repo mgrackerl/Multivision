@@ -8,7 +8,7 @@ var express = require('express');
 //Passport for Authentication
 var passport = require('passport');
 //Passport-Local for Authentication
-var localStrategy = require('passport-local').Strategy;
+var LocalStrategy = require('passport-local').Strategy;
 //Bring express
 var mongoose = require('mongoose');
 
@@ -30,9 +30,12 @@ require('./server/config/mongooseConfig')(config);
 
 var User = mongoose.model('User');
 
-/*
-passport.use(new localStrategy(
+
+passport.use(new LocalStrategy (
     function(username, password, done){
+
+        console.log('localStrategy: username - '+username);
+
         User.findOne({userName: username}).exec(function(err, user){
             if(user)
                 return done(null, user);
@@ -40,7 +43,7 @@ passport.use(new localStrategy(
                 return done(null, false);
         });
     }
-))
+));
 
 passport.serializeUser(function(user, done){
   if(user){
@@ -58,7 +61,7 @@ passport.deserializeUser(function(id, done){
         }
     })
 });
-*/
+
 require('./server/config/routes')(app);
 
 

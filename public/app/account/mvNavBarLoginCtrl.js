@@ -5,7 +5,11 @@ angular.module('app').controller('mvNavBarLoginCtrl', function($scope, $http){
     console.log("inside mvNavBarLoginCtrl");
 
     $scope.signin = function(username, password){
-        $http.post('/login', {userName: username, password: password}).then(function(response){
+
+        console.log("Sign In button clicked");
+
+
+        $http.post('/login', {username: username, password: password}).then(function(response){
             if(response.data.success){
                 console.log(username +" is logged in");
             }
@@ -13,5 +17,6 @@ angular.module('app').controller('mvNavBarLoginCtrl', function($scope, $http){
                 console.log("Failed to log in!");
             }
         });
+
     }
 })

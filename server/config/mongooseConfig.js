@@ -15,7 +15,7 @@ module.exports = function(config){
     var userSchema = mongoose.Schema({
         firstName: String,
         lastName: String,
-        userName: String
+        username: String
     });
     var User = mongoose.model('User', userSchema);
 
@@ -23,9 +23,9 @@ module.exports = function(config){
         if(collection.length === 0)
         {
             console.log('New users added.')
-            User.create({firstName:"Antony", lastName:"Baasan", userName:"antony"})
-            User.create({firstName:"Anhaa", lastName:"B", userName:"anhaa"})
-            User.create({firstName:"Annie", lastName:"Batsaikha", userName:"annie"})
+            User.create({firstName:"Antony", lastName:"Baasan", username:"antony"})
+            User.create({firstName:"Anhaa", lastName:"B", username:"anhaa"})
+            User.create({firstName:"Annie", lastName:"Batsaikha", username:"annie"})
         }
     })
 }

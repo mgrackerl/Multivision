@@ -13,6 +13,8 @@ var session = require('express-session')
 
 var cookieParser = require('cookie-parser')
 var passport = require('passport')
+var bodyParser = require('body-parser')
+
 
 module.exports = function(app, config) {
 //Helper function to configure Stylus middleware
@@ -24,7 +26,9 @@ module.exports = function(app, config) {
     //set view engine
     app.set('views', config.rootPath + "/server/views");
     app.set('view engine', 'jade');
-    app.use(cookieParser);
+    app.use(cookieParser());
+    app.use(bodyParser());
+
     //Stylus for express
     app.use(stylus.middleware({
         src: config.rootPath + "/public",
@@ -33,19 +37,20 @@ module.exports = function(app, config) {
 
     app.set('trust proxy', 1) // trust first proxy
 
-/*
+
+
     app.use(session({
         secret: 'multi vision unicorns',
         cookie: { secure: true }
     }))
-*/
+/*
     app.use(session({
         genid: function(req) {
             return genuuid(); // use UUIDs for session IDs
         },
         secret: 'multi vision unicorns'
     }))
-
+*/
 
 
     app.use(passport.initialize());
@@ -59,5 +64,4 @@ module.exports = function(app, config) {
     app.use(morgan('combined'));
 
     //Turn on express body parser. This will used for some middlewares. DUPRICATED: need 'body-parser'
-    //app.use(express.bodyParser());
 }
