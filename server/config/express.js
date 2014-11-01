@@ -17,7 +17,7 @@ var bodyParser = require('body-parser')
 
 
 module.exports = function(app, config) {
-//Helper function to configure Stylus middleware
+    //Helper function to configure Stylus middleware
     function Compile(str, path) {
         return stylus(str).set('filename', path);
     }
@@ -37,21 +37,9 @@ module.exports = function(app, config) {
 
     app.set('trust proxy', 1) // trust first proxy
 
-
-
     app.use(session({
-        secret: 'multi vision unicorns',
-        cookie: { secure: true }
-    }))
-/*
-    app.use(session({
-        genid: function(req) {
-            return genuuid(); // use UUIDs for session IDs
-        },
         secret: 'multi vision unicorns'
     }))
-*/
-
 
     app.use(passport.initialize());
     app.use(passport.session());

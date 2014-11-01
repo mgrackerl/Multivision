@@ -18,10 +18,22 @@ module.exports = function(app){
     //login
     app.post('/login', auth.authenticate);
 
+    //logout
+    app.post('/logout', function(req, res){
+        console.log("---- /logout");
+        //console.log('req: %j',req);
+        req.logout();//method came from passport
+        res.end();
+    });
+
     //set default route. Because SPA we need only one route.
     app.get('*', function(req, res){
         console.log("/* : "+req);
-        res.render('index');//take from view engine folder.
+        console.log("req.user : %j"+req.user);
+
+        res.render('index', {
+            bootstrappedUser: req.user
+        });//take from view engine folder.
     });
 
 }
