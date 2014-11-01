@@ -2,7 +2,7 @@
  * Created by A on 10/26/2014.
  */
 
-var passport= require('passport');
+var auth = require('./auth');
 
 module.exports = function(app){
 
@@ -16,26 +16,7 @@ module.exports = function(app){
     });
 
     //login
-    app.post('/login', function(req, res, next){
-        console.dir("req.body: "+ req.body);
-
-        var auth = passport.authenticate('local', function(err, user)
-        {
-            console.log("routes.js auth :: err : "+err);
-            console.log("routes.js auth :: user : "+user);
-
-            if(err) return next(err);
-            if(!user) res.send({success: false});
-
-            req.logIn(user, function(err){
-                if(err) return next(err);
-
-                res.send({success: true, user: user});
-            });
-        })
-        auth(req, res, next);
-    });
-
+    app.post('/login', auth.authenticate);
 
     //set default route. Because SPA we need only one route.
     app.get('*', function(req, res){
