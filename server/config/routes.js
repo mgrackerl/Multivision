@@ -3,12 +3,27 @@
  */
 
 var auth = require('./auth');
+var mongoose = require('mongoose')
+var User = mongoose.model('User')
 
 module.exports = function(app){
 
     console.log("routes.js exported");
 
-    //===== Express Run
+    //for partial views
+    app.get('/api/users'
+        //, auth.requireApiLogin
+        , auth.requireRole("admin")
+        ,function(req, res)
+    {
+
+        console.log("--- api/users : "+req.params[0]);
+
+        User.find({}).exec(function(err, collection){
+            res.send(collection);
+        })
+    });
+
     //for partial views
     app.get('/partials/*', function(req, res){
         console.log("--- req.params : "+req.params[0]);
