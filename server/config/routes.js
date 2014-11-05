@@ -13,13 +13,9 @@ module.exports = function(app){
     console.log("routes.js exported");
 
     //for partial views
-    app.get('/api/users'
-        , auth.requireRole("admin")
-        , users.getUsers
-    );
-    app.post('/api/users'
-        , users.createUser
-    );
+    app.get('/api/users', auth.requireRole("admin"), users.getUsers);
+    app.post('/api/users', users.createUser );
+    app.post('/api/users', users.updateUser );
 
     //for partial views
     app.get('/partials/*', function(req, res){
