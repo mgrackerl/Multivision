@@ -24,6 +24,10 @@ angular.module('app').config(function($routeProvider,$locationProvider){
         {templateUrl: '/partials/main/main'
             , controller: 'mvMainController'})
 
+        .when('/courses',
+        {templateUrl: '/partials/account/signup'
+            , controller: 'mvCourseListCtrl'})
+
         .when('/signup',
         {templateUrl: '/partials/account/signup'
             , controller: 'mvSignupCtrl'})

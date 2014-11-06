@@ -12,14 +12,14 @@ module.exports = function(app){
 
     console.log("routes.js exported");
 
+    // ----- API request handlers (start)
     //for partial views
     app.get('/api/users', auth.requireRole("admin"), users.getUsers);
     app.post('/api/users', users.createUser );
-    app.post('/api/users', users.updateUser );
+    app.put('/api/users', users.updateUser );
 
     //for partial views
     app.get('/partials/*', function(req, res){
-        console.log("--- req.params : "+req.params[0]);
         res.render('../../public/app/' + req.params[0]);
     });
 
@@ -28,11 +28,11 @@ module.exports = function(app){
 
     //logout
     app.post('/logout', function(req, res){
-        console.log("---- /logout");
-        //console.log('req: %j',req);
         req.logout();//method came from passport
         res.end();
     });
+
+    // ----- API request handlers (end)
 
     //set default route. Because SPA we need only one route.
     app.get('*', function(req, res){

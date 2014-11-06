@@ -65,15 +65,20 @@ angular.module('app').factory('mvAuth', function($http, mvIdentity, $q, mvUser){
         },
 
         updateCurrentUser: function(newUserData){
+            console.log('mvAuth.js updateCurrentUser 111');
             var dfd = $q.defer();
 
             var clone = angular.copy(mvIdentity.currentUser);
             angular.extend(clone, newUserData);
 
+            console.log('mvAuth.js updateCurrentUser 222');
+
             clone.$update().then(function(){
-                mvIdentity.currentUser = close;
+                console.log('mvAuth.js updateCurrentUser 333');
+                mvIdentity.currentUser = clone;
                 dfd.resolve();
             },function(response){
+                console.log('mvAuth.js updateCurrentUser 444');
                 dfd.reject(response.data.reason);
             });
 
