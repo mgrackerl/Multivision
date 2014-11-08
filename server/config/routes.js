@@ -18,6 +18,8 @@ module.exports = function(app){
     app.post('/api/users', users.createUser );
     app.put('/api/users', users.updateUser );
 
+    app.put('/api/courses', courses.getCourses);
+
     //for partial views
     app.get('/partials/*', function(req, res){
         res.render('../../public/app/' + req.params[0]);
@@ -31,6 +33,11 @@ module.exports = function(app){
         req.logout();//method came from passport
         res.end();
     });
+
+    //If Api is unknown, the return 404 (otherwise we get default page)
+    app.all('/api/*', function(req,res){
+        res.send(404);
+    })
 
     // ----- API request handlers (end)
 
