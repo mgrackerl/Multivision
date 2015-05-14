@@ -3,10 +3,10 @@
  */
 
 var auth = require('./auth');
-var mongoose = require('mongoose')
-var User = mongoose.model('User')
+var mongoose = require('mongoose');
 
 var users = require('../controllers/users')
+var courses = require('../controllers/courses');
 
 module.exports = function(app){
 
@@ -18,7 +18,8 @@ module.exports = function(app){
     app.post('/api/users', users.createUser );
     app.put('/api/users', users.updateUser );
 
-    app.put('/api/courses', courses.getCourses);
+    app.get('/api/courses', courses.getCourses);
+    app.get('/api/courses/:id', courses.getCoursesById);
 
     //for partial views
     app.get('/partials/*', function(req, res){
@@ -43,9 +44,6 @@ module.exports = function(app){
 
     //set default route. Because SPA we need only one route.
     app.get('*', function(req, res){
-        console.log("/* : "+req);
-        console.log("req.user : %j"+req.user);
-
         res.render('index', {
             bootstrappedUser: req.user
         });//take from view engine folder.
